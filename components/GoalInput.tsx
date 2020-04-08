@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Modal } from 'react-native';
 
 export interface AppInput {
     onAddGoal: any;
+    visible: boolean;
+    onCancel: any;
 } 
 
 const GoalInput = (props: AppInput) => {
@@ -13,36 +15,64 @@ const GoalInput = (props: AppInput) => {
         setEnteredGoal(enteredText)
     }
 
+    const addGoalHandler = () => {
+        props.onAddGoal(enteredGoal);
+        setEnteredGoal('');
+    }
+
     return ( 
-        <View style={styles.inputContainer}>
-            <TextInput  
-                placeholder="Course Goal" 
-                style={styles.input}
-                onChangeText={golaInputHandeler} 
-                value={enteredGoal}
-            />  
-            <Button 
-                title="ADD" 
-                onPress={props.onAddGoal.bind(this, enteredGoal)}
-            />
-      </View>
+        <Modal visible={props.visible} animationType="slide" >
+            <View style={styles.inputContainer}>
+                <TextInput  
+                    placeholder="Course Goal" 
+                    style={styles.input}
+                    onChangeText={golaInputHandeler} 
+                    value={enteredGoal}
+                /> 
+                <View style={styles.buttonContainer}>
+                    <View style={styles.button}>
+                        <Button
+                            title="Cancel"
+                            color="red"
+                            onPress={props.onCancel}
+                        />
+                    </View>
+                    <View style={styles.button}>
+                        <Button 
+                            title="ADD" 
+                            onPress={props.onAddGoal.bind(this, enteredGoal)}
+                        />
+                    </View>
+                </View>
+
+        </View>
+      </Modal>
     )
 }
  
 const styles = StyleSheet.create({
     screen: {
-      padding: 50
+        padding: 50
     },
     inputContainer: { 
-      flexDirection: 'row', 
-      justifyContent: 'space-between', 
-      alignItems: 'center'
+        flex: 1,
+        justifyContent: 'center', 
+        alignItems: 'center'
     },
     input: {
-      width: '80%',
-      borderColor: 'black',
-      borderWidth: 1,
-      paddingTop: 10
+        width: '80%',
+        borderColor: 'black',
+        borderWidth: 1,
+        paddingTop: 10,
+        marginBottom: 10
+    },
+    buttonContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        width: '60%'
+    },
+    button: {
+        width: '40%',
     }
  })
 
