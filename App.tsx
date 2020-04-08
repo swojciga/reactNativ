@@ -4,15 +4,26 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import GoalInput from './components/GoalInput';
 import GoalItem from './components/GoalItem';
  
+export interface Goal {
+  value: string,
+  id: string
+}
+
 export default function App() {
 
   const [courseGoals, setCourseGoals ] = useState([]) as any[];
 
   const addGoalHandler = (goalTitle: string) => {
-    setCourseGoals((courseGoal: string[]) => [
-      ...courseGoals,
+    setCourseGoals((currentGoals: Goal[]) => [
+      ...currentGoals,
       { id: Math.random().toString(), value: goalTitle }
     ]); 
+  }
+
+  const removeGoalHandler = (goalId: string) => {
+    setCourseGoals( (currentGoals: Goal[]) => {
+      return currentGoals.filter( (goal: Goal) => goal.id !== goalId )
+    })
   }
 
   return (
@@ -23,7 +34,9 @@ export default function App() {
         data = {courseGoals}
         renderItem = { itemData => (
           <GoalItem
+            id={itemData.item.id}
             title={itemData.item.value}
+            onDelete={removeGoalHandler}
           ></GoalItem>
         )}
       />
