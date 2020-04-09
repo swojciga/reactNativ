@@ -40,7 +40,7 @@ const GoalInput = (props: AppInput) => {
                     <View style={styles.button}>
                         <Button 
                             title="ADD" 
-                            onPress={props.onAddGoal.bind(this, enteredGoal)}
+                            onPress={addGoalHandler}
                         />
                     </View>
                 </View>
